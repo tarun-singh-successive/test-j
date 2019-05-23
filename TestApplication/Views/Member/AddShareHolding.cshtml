@@ -1,0 +1,115 @@
+﻿@model TestApplication.Entities.ShareHolding
+@using TestApplication.Models
+@using TestApplication.Helpers
+@{
+    ViewBag.Title = "AddShareHolding";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model?.Id > 0)
+{
+    <h2>Edit Share Holding</h2>
+}
+else if (ViewBag.IsView == true)
+{
+    <h2>View Share Holding</h2>
+}
+else
+{
+    <h2>Add Share Holding</h2>
+}
+
+@using (Html.BeginForm("AddShareHolding", "Member", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.MemberId, MemberModel.GetMembers(), "Select Member", new { @class = "form-control select2", required = "required", @placeholder = "Select Member" })
+                @Html.ValidationMessageFor(model => model.MemberId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReferId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.ReferId, MemberModel.GetPromoters(), "Select Promoter", new { @class = "form-control select2", required = "required", @defaultdate = "true" })
+                @Html.ValidationMessageFor(model => model.ReferId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransferDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.TransferDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @value = DateTime.Now.ToShortDateString() } })
+                @Html.ValidationMessageFor(model => model.TransferDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", required = "required", @onchange="calcTotalPrice()" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PricePerShare, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.PricePerShare, new { htmlAttributes = new { @class = "form-control", @step = 0.01, @type = "number", required = "required", @onchange = "calcTotalPrice()" } })
+                @Html.ValidationMessageFor(model => model.PricePerShare, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Total Price", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.TotalPrice, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                @Html.ValidationMessageFor(model => model.TotalPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+                @if ((Model?.Id ?? 0) == 0)
+                {
+                    <input type="submit" value="Add Share Holdings" class="btn btn-primary waves-effect waves-light" />
+                }
+                else if (ViewBag.IsView == true)
+                {
+                    <a class="btn btn-info waves-effect waves-light" href="@Common.GetUrl("ShareHoldings", "Member", @Model.Id)">Edit</a>
+                }
+                else
+                {
+                    <input type="submit" value="Update Share Holdings" class="btn btn-primary waves-effect waves-light" />
+                }
+                <a class="btn btn-secondary" href="@Common.GetUrl("ShareHoldings", "Member")">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+
+    @Styles.Render("~/Content/css")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var transferDate = $("#TransferDate");
+            if (transferDate.length == 0) return;
+            transferDate.val(formatDate(transferDate.attr("value")));
+
+            var disabled = '@ViewData["disablecontrols"].ToString()';
+            if (disabled == 'True') {
+                $('input,select,:button').attr('disabled', disabled);
+            }
+            calcTotalPrice();
+        });
+
+        function calcTotalPrice() {
+            $("#TotalPrice").val($("#Quantity").val() * $("#PricePerShare").val());
+        }
+    </script>
+
+}

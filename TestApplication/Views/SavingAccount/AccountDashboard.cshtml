@@ -1,0 +1,215 @@
+﻿@model TestApplication.Entities.MemberAccount
+@using TestApplication.Helpers
+@{
+    ViewBag.Title = "AccountDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .font-size20 {
+        font-size: 20px !important;
+    }
+
+    .close-adjust {
+        padding-right: 15px !important;
+        margin-top: -6px !important;
+    }
+</style>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body" style="padding:10px;">
+                                <h2>Saving Accounts - @Model.Member.Mobile</h2>
+                                <hr />
+                                <ul class="nav nav-tabs nav-tabs-custom nav-justified" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" onclick="showTab('1');"
+                                           role="tab">
+                                            <span class="d-block d-sm-none">
+                                            </span> <span class="d-none d-sm-block">Profile</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" onclick="showTab('2');"
+                                           role="tab">
+                                            <span class="d-block d-sm-none">
+                                            </span> <span class="d-none d-sm-block">Transactions</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" onclick="showTab('3');"
+                                           role="tab">
+                                            <span class="d-block d-sm-none">
+                                            </span> <span class="d-none d-sm-block">Deposit</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" onclick="showTab('4');"
+                                           role="tab">
+                                            <span class="d-block d-sm-none">
+                                            </span> <span class="d-none d-sm-block">Withdraw</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" onclick="showTab('5');"
+                                           role="tab">
+                                            <span class="d-block d-sm-none">
+                                            </span> <span class="d-none d-sm-block">Debit other charges</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" onclick="showTab('6');"
+                                           role="tab">
+                                            <span class="d-block d-sm-none">
+                                            </span> <span class="d-none d-sm-block">Close Account</span>
+                                        </a>
+                                    </li>
+                                </ul><!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active p-3" id="1" role="tabpanel">
+                                        @Html.Partial("Accounts/_Profile", Model)
+                                    </div>
+                                    <div class="tab-pane p-3" id="2" role="tabpanel">
+                                        @Html.Partial("Accounts/_Transactions", Model.AmountTransaction)
+                                    </div>
+                                    <div class="tab-pane p-3" id="3" role="tabpanel">
+                                        @Html.Partial("Accounts/_Deposit", Model.AmountTransaction)
+                                    </div>
+                                    <div class="tab-pane p-3" id="4" role="tabpanel">
+                                        @Html.Partial("Accounts/_Withdraw", Model.AmountTransaction)
+                                    </div>
+                                    <div class="tab-pane p-3" id="5" role="tabpanel">
+                                        @Html.Partial("Accounts/_OtherCharges", Model.AmountTransaction)
+                                    </div>
+                                    <div class="tab-pane p-3" id="6" role="tabpanel">
+                                        @Html.Partial("Accounts/_CloseAccount", Model)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="modal fade transaction-modal" tabindex="-1" role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-size20 mt-0">View Transaction</h5><button type="button" class="close close-adjust" data-dismiss="modal"
+                                                                          aria-hidden="true">
+                        ×
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="TransactionDiv">
+
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            openPageOnPageLoad();
+            loadGrid();
+        });
+
+        function openPageOnPageLoad() {
+            var openPage = getUrlVars()["OpenPage"];
+            if (openPage) {
+                showTab(openPage);
+            }
+            else {
+                showTab("1");
+            }
+        }
+
+        function viewTransactionClicked(id){
+            $("#TransactionDiv").load("@Url.Action("Load","SavingAccount")", { 'id' : id },
+                                 function (response, status, xhr) {
+                                     if (status == "error") {
+                                         alert("An error occurred while loading the results.");
+                                     }
+                                 });
+        }
+
+        function showTab(val) {
+            $('#1').toggle(val == "1");
+            $('#2').toggle(val == "2");
+            $('#3').toggle(val == "3");
+            $('#4').toggle(val == "4");
+            $('#5').toggle(val == "5");
+            $('#6').toggle(val == "6");
+        }
+
+        function loadGrid() {
+            $("#datatable-buttons").DataTable({
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "orderMulti": false, // for disable multiple column at once
+
+                "ajax": {
+                    "url": "/SavingAccount/LoadViewTransactions",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columnDefs":
+                    [{
+                        "targets": [7],
+                        "visible": true,
+                        "searchable": false
+                    }],
+                "columns": [
+                    { "data": "TransactionDateString", "name": "TransactionDate", "autoWidth": true },
+                    { "data": "PaymentMode", "name": "PaymentMode", "autoWidth": true },
+                    { "data": "Remarks", "title": "Remarks", "name": "Remarks", "autoWidth": true },
+                    { "data": "Debit", "name": "Debit", "autoWidth": true },
+                    { "data": "Credit", "name": "Credit", "autoWidth": true },
+                    { "data": "BalanceLeft", "name": "BalanceLeft", "autoWidth": true },
+                    { "data": "StatusText", "name": "StatusText", "autoWidth": true },
+                    {
+                        "render": function (data, type, full, meta) {
+                            return '<button class="btn btn-info waves-effect waves-light" data-toggle="modal" onclick="viewTransactionClicked(\''+(full.Id).toString()+'\')" data-target=".transaction-modal">View</button>';
+                        }, width: "10%", orderable: false
+                    }
+                ],
+                buttons: ["copy", "excel", "pdf", "colvis"]
+            });
+            $("#datatable-buttons_filter").append($(".dt-buttons"));
+        }
+
+        function onSuccess(success) {
+            if (success == "True") {
+                window.location.reload();
+            }
+            else {
+                swal(
+                    'Error!',
+                    'Transaction was not completed successfully',
+                    'error'
+                ).then(function () {
+                    window.location.reload();
+                }).catch(swal.noop);
+            }
+        }
+
+    </script>
+}
+

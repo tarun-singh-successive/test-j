@@ -1,0 +1,89 @@
+﻿@using TestApplication.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "LoginPage";
+}
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,minimal-ui">
+    <meta content="Admin Dashboard" name="description">
+    <meta content="Themesbrand" name="author">
+    <link rel="shortcut icon" href="@Url.Content("~/")assets/images/favicon.ico">
+    <link href="@Url.Content("~/")assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="@Url.Content("~/")assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
+    <link href="@Url.Content("~/")assets/css/icons.css" rel="stylesheet" type="text/css">
+    <link href="@Url.Content("~/")assets/css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="wrapper-page">
+        <div class="card overflow-hidden account-card mx-3">
+            <div class="bg-primary p-4 text-white text-center position-relative">
+                <h4 class="font-20 m-b-5">Welcome Back !</h4>
+                @*<p class="text-white-50 mb-4">Sign in to continue to Jayant India Nidhi Limited.</p>*@
+                <div class="logo logo-admin">
+                    <img src="@Url.Content("~/")assets/images/jayant-logo.png" height="70" style="margin-left: -8px; margin-bottom: 3px;">
+                </div>
+            </div>
+            <div class="account-card-content">
+                <div class="form-horizontal m-t-30">
+                    @using (Html.BeginForm("LoginPage", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Username, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(m => m.Username, new { placeholder = "Enter username", @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "col-md-12 control-label" })
+                            <div class="col-md-12">
+                                @Html.PasswordFor(m => m.Password, new { placeholder = "Enter password", @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group m-t-20">
+                            <div class="col-md-12 text-right">
+                                <button class="btn btn-primary w-md waves-effect waves-light"
+                                        type="submit" value="Log in">
+                                    Log In
+                                </button>
+                            </div>
+                        </div>
+                        @*<div class="form-group m-t-10 mb-0 row">
+                            <div class="col-12 m-t-20">
+                                <div>
+                                    <i class="mdi mdi-lock"></i> Forgot
+                                    your password? Contact your admin
+                                </div>
+                            </div>
+                        </div>*@
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="m-t-40 text-center">
+            <p>© @DateTime.Now.Year Jayant India Nidhi Limited. Crafted with <i class="mdi mdi-heart text-danger"></i> by BitsHarbour</p>
+        </div>
+    </div>
+    <script src="@Url.Content("~/")assets/js/jquery.min.js"></script>
+    <script src="@Url.Content("~/")assets/js/bootstrap.bundle.min.js"></script>
+    <script src="@Url.Content("~/")assets/js/metisMenu.min.js"></script>
+    <script src="@Url.Content("~/")assets/js/jquery.slimscroll.js"></script>
+    <script src="@Url.Content("~/")assets/js/waves.min.js"></script>
+    <script src="@Url.Content("~/")assets/js/app.js"></script>
+</body>
+
+</html>

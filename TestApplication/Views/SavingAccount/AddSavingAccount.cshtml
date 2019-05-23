@@ -1,0 +1,78 @@
+﻿@model TestApplication.Entities.MemberAccount
+@using TestApplication.Helpers
+@{
+    ViewBag.Title = "AddSavingAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (Model?.Id > 0)
+{
+<h4>Edit Saving Account</h4>
+}
+else if (Convert.ToBoolean(ViewData["disablecontrols"]))
+{
+    <h4>View Saving Account</h4>
+}
+else
+{
+    <h4>Add Saving Account</h4>
+}
+
+@using (Html.BeginForm("AddSavingAccount", "SavingAccount", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.Partial("_OpenAccount", Model)
+        @Html.Partial("_Payment", Model.AmountTransaction ?? new TestApplication.Entities.AmountTransaction())
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+
+                @if (Model?.Id > 0)
+                {
+                    <input type="submit" value="Update Account" class="btn btn-primary waves-effect waves-light" />
+                }
+                else if (Convert.ToBoolean(ViewData["disablecontrols"]))
+                {
+                    <a class="btn btn-primary" href="@Common.GetUrl("AddSavingAccount", "SavingAccount", @Model.Id)">Edit Account</a>
+                }
+                else
+                {
+                    <input type="submit" value="Open Account" class="btn btn-primary waves-effect waves-light" />
+                }
+                <a class="btn btn-secondary" href="@Common.GetUrl("SavingAccountSchemes", "SavingAccount")">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+        var disabled
+        $(document).ready(function () {
+            toggleDisplayNone("JointAccountDropdown", false);
+            toggleDisplayNone("DivCheque", false);
+            toggleDisplayNone("OnlineTrans", false);
+            var disabled = '@ViewData["disablecontrols"].ToString()';
+            if (disabled == 'True') {
+                $('input,select,:button').attr('disabled', disabled);
+            }
+        });
+
+        function jointAccountClicked(control) {
+            toggleDisplayNone("JointAccountDropdown", control.value == "true");
+        }
+
+        
+    </script>
+
+}
+
+

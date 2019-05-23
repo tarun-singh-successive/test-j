@@ -1,0 +1,183 @@
+﻿@model TestApplication.Entities.FdAccount
+    @using TestApplication.Models
+@using TestApplication.Helpers
+@{
+    ViewBag.Title = "AddFdAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add Fd Account</h2>
+
+
+@if (Model?.Id > 0)
+{
+    <h4>Edit Fd Account</h4>
+}
+else if (Convert.ToBoolean(ViewData["disablecontrols"]))
+{
+    <h4>View Fd Account</h4>
+}
+else
+{
+    <h4>Add Fd Account</h4>
+}
+
+@using (Html.BeginForm("AddFdAccount", "Fd", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.PartialFor(model => model.FdMemberAccount, "_CommonOpenAccount")
+        @Html.HiddenFor(x => x.FdAmount)
+        <div class="form-group">
+            @Html.LabelFor(model => model.SchemeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.SchemeId, FdModels.GetFdAccountSchemes(), "Select Scheme", new { @class = "form-control select2", required = "required" })
+                @Html.ValidationMessageFor(model => model.SchemeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FdAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.FdMemberAccount.AmountTransaction.Amount, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                @Html.ValidationMessageFor(model => model.FdMemberAccount.AmountTransaction.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-2 p-r0">
+                    <input input data-val="true" data-val-required="The Active field is required." id="IsLessMinAmount" name="IsLessMinAmount" type="checkbox" value="true" switch="bool">
+                    <label for="IsLessMinAmount" data-on-label="Yes" data-off-label="No" class="m-t-4"></label>
+                </div>
+                <div class="col-md-10 p-l0 m-l-50">
+                    <label class="control-label">Open Fd with less than minimum amount</label>
+                </div>
+                @Html.ValidationMessageFor(model => model.IsLessMinAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.OpenDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.OpenDate, new { htmlAttributes = new { @class = "form-control", required = "required", @type = "date" } })
+                @Html.ValidationMessageFor(model => model.OpenDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-2 p-r0">
+                    <input input data-val="true" data-val-required="The Active field is required." id="RenewAfterMaturity" name="RenewAfterMaturity" type="checkbox" value="true" switch="bool">
+                    <label for="RenewAfterMaturity" data-on-label="Yes" data-off-label="No" class="m-t-4"></label>
+                </div>
+                <div class="col-md-10 p-l0 m-l-50">
+                    <label class="control-label">Auto Renew after Maturity</label>
+                </div>
+                @Html.ValidationMessageFor(model => model.RenewAfterMaturity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-2 p-r0">
+                    <input input data-val="true" data-val-required="The Active field is required." id="PayFromSavingAccount" name="PayFromSavingAccount" type="checkbox" value="true" switch="bool">
+                    <label for="PayFromSavingAccount" data-on-label="Yes" data-off-label="No" class="m-t-4"></label>
+                </div>
+                <div class="col-md-10 p-l0 m-l-50">
+                    <label class="control-label">Make FD from Member's Saving Account</label>
+                </div>
+                @Html.ValidationMessageFor(model => model.PayFromSavingAccount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-2 p-r0">
+                    <input input data-val="true" data-val-required="The Active field is required." id="TdsDeduction" name="TdsDeduction" type="checkbox" value="true" switch="bool">
+                    <label for="TdsDeduction" data-on-label="Yes" data-off-label="No" class="m-t-4"></label>
+                </div>
+                <div class="col-md-10 p-l0 m-l-50">
+                    <label class="control-label">TDS Deduction</label>
+                </div>
+                @Html.ValidationMessageFor(model => model.TdsDeduction, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsJointAccount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8" style="padding-top:6px">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="defaultInline1" name="IsJointAccount" onclick="jointAccountClicked(this)" value="false">
+                    <label class="custom-control-label" for="defaultInline1">Single</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="defaultInline2" name="IsJointAccount" onclick="jointAccountClicked(this)" value="true">
+                    <label class="custom-control-label" for="defaultInline2">Joint A/C</label>
+                </div>
+                @Html.ValidationMessageFor(model => model.IsJointAccount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group JointAccountDropdown">
+            @Html.LabelFor(model => model.JointAccountMemberId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.JointAccountMemberId, MemberModel.GetMembers(), "Select Joint Member", new { @class = "form-control select2" })
+                @Html.ValidationMessageFor(model => model.JointAccountMemberId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.IsNominee, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                <input input data-val="true" data-val-required="The Active field is required." id="IsNominee" name="IsNominee" type="checkbox" value="true" switch="bool">
+                <label for="IsNominee" data-on-label="Yes" data-off-label="No" class="m-t-4"></label>
+                @Html.ValidationMessageFor(model => model.IsNominee, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.PenaltyCharges, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.PenaltyCharges, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                @Html.ValidationMessageFor(model => model.PenaltyCharges, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.PartialFor(x => x.FdMemberAccount.AmountTransaction, "_Payment")
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+
+                @if (Model?.Id > 0)
+                {
+                    <input type="submit" value="Update Account" class="btn btn-primary waves-effect waves-light" />
+                }
+                else if (Convert.ToBoolean(ViewData["disablecontrols"]))
+                {
+                    <a class="btn btn-primary" href="@Common.GetUrl("AddSavingAccount", "SavingAccount", @Model.Id)">Edit Account</a>
+                }
+                else
+                {
+                    <input type="submit" value="Open Account" class="btn btn-primary waves-effect waves-light" />
+                }
+                <a class="btn btn-secondary" href="@Common.GetUrl("SavingAccountSchemes", "SavingAccount")">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+        var disabled
+        $(document).ready(function () {
+            toggleDisplayNone("JointAccountDropdown", false);
+            toggleDisplayNone("DivCheque", false);
+            toggleDisplayNone("OnlineTrans", false);
+            var disabled = '@ViewData["disablecontrols"].ToString()';
+            if (disabled == 'True') {
+                $('input,select,:button').attr('disabled', disabled);
+            }
+        });
+
+        function jointAccountClicked(control) {
+            toggleDisplayNone("JointAccountDropdown", control.value == "true");
+        }
+
+
+    </script>
+
+}

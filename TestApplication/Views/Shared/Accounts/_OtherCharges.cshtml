@@ -1,0 +1,66 @@
+﻿@model TestApplication.Entities.AmountTransaction
+@using TestApplication.Models
+@using TestApplication.Helpers
+
+@using (Ajax.BeginForm("AddOtherCharges", new AjaxOptions()
+{
+    OnSuccess= "onSuccess"
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <hr />
+    @Html.HiddenFor(model => model.MemberAccountId)
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactionPurposeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.TransactionPurposeId, SavingAccountModel.GetTransactionPurposes(), "Select Member", new { @class = "form-control select2", required = "required", @placeholder = "Select Type" })
+                @Html.ValidationMessageFor(model => model.TransactionPurposeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransactionDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.TransactionDate, new { htmlAttributes = new { @class = "form-control", @type = "date", required = "required" } })
+                @Html.ValidationMessageFor(model => model.TransactionDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <label class="col-md-offset-2 warning-label">The Current Account balance is @Model.BalanceLeft</label>
+        <div class="form-group">
+            @Html.Label("Amount", htmlAttributes: new { @class = "control-label col-md-2", @for = nameof(Model.Amount) })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", required = "required", type = "number" } })
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+
+                @if ((Model?.Id ?? string.Empty) == string.Empty)
+                {
+                    <input type="submit" value="Debit" onclick="validate(this, event)" class="btn btn-primary waves-effect waves-light" />
+                }
+                else if (ViewBag.IsView == true)
+                {
+                    <a class="btn btn-info waves-effect waves-light" onclick="validate(this, event)" href="@Common.GetUrl("AddOtherCharges", "SavingAccount", @Model.Id)">Edit</a>
+                }
+                else
+                {
+                    <input type="submit" value="Update Debit" class="btn btn-primary waves-effect waves-light" />
+                }
+                <a class="btn btn-secondary" href="@Common.GetUrl("SavingAccounts", "SavingAccount")">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,68 @@
+﻿@model TestApplication.Entities.UploadDocument
+@{
+    ViewBag.Title = "UploadDocuments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .input-group-append {
+        display: flex !important;
+    }
+
+    .btn {
+        padding-right: 107px;
+    }
+</style>
+
+<h2>Upload Documents</h2>
+
+@using (Html.BeginForm("UploadDocuments", "Member", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                @Html.TextBoxFor(model => model.FileAttach, "", new { type = "file", @class = "filestyle" }) <br />
+            </div>
+        </div>
+        <input type="submit" value="Upload" />
+    </div>
+    <button id="addNewFamilyMember" type="button">Add</button>
+    @*if (Model.Files != null)
+        {
+            @*for (int i = 0; i < Model.File.Length; i++)
+            {
+                <tr>
+                    <td>
+                        <button type="button">Delete</button>
+                        @Html.Hidden("FamilyMembers.Index", i)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => Model.Files[i])
+                    </td>
+                </tr>
+            }
+        }*@
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".btn-default").removeClass("btn-default").addClass("btn-primary");
+        });
+
+        var hidden = '@Html.Hidden("FamilyMembers.Index", "{id}")';
+var relationHtml = '@Html.TextBox("FamilyMembers[{id}].Relation")';
+var fullNameHtml = '@Html.TextBox("FamilyMembers[{id}].FullName")';
+
+$("#addNewFamilyMember").on("click", function () {
+        var time = Date.now();
+
+        var deleteHtml = "<button type='button'>Delete</button>";
+
+        $("#familyMembers-table").find("tbody")
+         .append($("<tr><td>" + hidden.replace("{id}", time) + deleteHtml + "</td>" +
+            "<td>" + relationHtml.replace("{id}", time) + "</td>" +
+            "<td>" + fullNameHtml.replace("{id}", time) + "</td></tr>"));
+});
+    </script>
+}
+

@@ -1,0 +1,95 @@
+﻿@model TestApplication.Entities.Branches
+@using TestApplication.Models
+@using TestApplication.Helpers
+
+@{
+    ViewBag.Title = "Add Branch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model?.Id > 0)
+{
+    <h2>Edit Branch</h2>
+}
+else if (ViewBag.IsView == true)
+{
+    <h2>View Branch</h2>
+}
+else
+{
+    <h2>Add Branch</h2>
+}
+
+@using (Html.BeginForm("AddBranch", "Company", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Member</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Branch Name", htmlAttributes: new { @class = "control-label col-md-2", @for = nameof(Model.Name) })
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("State", htmlAttributes: new { @class = "control-label col-md-2", @for = nameof(Model.StateId) })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.StateId, CompanyModel.GetStatesByCountryId(), "Select State", new { @class = "form-control select2", required = "required" })
+                @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("City", htmlAttributes: new { @class = "control-label col-md-2", @for = nameof(Model.Name) })
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.City, new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.OpeningDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.OpeningDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @value = DateTime.Now.ToShortDateString() } })
+                @Html.ValidationMessageFor(model => model.OpeningDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+
+                @if ((Model?.Id ?? 0) == 0)
+                {
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Add Branch</button>
+                }
+                else if (ViewBag.IsView == true)
+                {
+                    <a class="btn btn-primary waves-effect waves-light" href="@Common.GetUrl("AddBranch", "Company", @Model.Id)">Edit</a>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Update Type</button>
+                }
+                <a class="btn btn-secondary waves-effect waves-light" href="@Common.GetUrl("Branches", "Company")">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@*@Html.Partial("Accounts/_Deposit",Model)*@
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var disabled = '@ViewData["disablecontrols"].ToString()';
+            if (disabled == 'True') {
+                $('input,select,:button').attr('disabled', disabled);
+            }
+
+        });
+    </script>
+}

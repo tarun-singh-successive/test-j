@@ -1,0 +1,117 @@
+﻿@model TestApplication.Entities.Nominees
+@using TestApplication.Helpers
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .modal-backdrop.fade.show {
+        z-index: -1 !important;
+    }
+
+    .purple-border textarea {
+        border: 1px solid #ba68c8;
+    }
+
+    .purple-border .form-control:focus {
+        border: 1px solid #ba68c8;
+        box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+    }
+
+    .green-border-focus .form-control:focus {
+        border: 1px solid #8bc34a;
+        box-shadow: 0 0 0 0.2rem rgba(139, 195, 74, .25);
+    }
+</style>
+<input type="date">
+<div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample">
+    <label class="custom-control-label" for="defaultInline1">1</label>
+</div>
+
+<!-- Default inline 2-->
+<div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample">
+    <label class="custom-control-label" for="defaultInline2">2</label>
+</div>
+
+<!-- Default inline 3-->
+<div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" class="custom-control-input" id="defaultInline3" name="inlineDefaultRadiosExample">
+    <label class="custom-control-label" for="defaultInline3">3</label>
+</div>
+Material radio buttons
+
+<div class="form-group purple-border">
+    <label for="exampleFormControlTextarea4">Colorful border</label>
+    <textarea class="form-control" id="exampleFormControlTextarea4" rows="3"></textarea>
+</div>
+<div class="green-border-focus">
+    <textarea class="form-control" placeholder="Approved Note" id="exampleFormControlTextarea5" rows="3"></textarea>
+</div>
+@using (Html.BeginForm("ViewTransaction", "SavingAccount", FormMethod.Post, new { role = "form" }))
+{
+    @Html.Partial("_Nominee", Model)
+    <div>
+        <input type="submit" />
+    </div>
+}
+
+@section scripts{
+    <script type="text/javascript">
+        //$(document).ready(function () {
+        //    $(".close").click(function () {
+        //        $(".modal-backdrop").each(function () {
+        //            if ($(this).attr('class') == 'modal-backdrop fade show') {
+        //                $(".modal-backdrop").remove();
+        //            }
+        //        })
+        //    })
+        //});
+
+        @*$(document).ready(function(){
+    $("#yourselect").click(function()
+    {
+        // Home is your controller, Index is your action name
+        $("#yourdiv").load("@Url.Action("Load","SavingAccount")", { 'id' : '123' },
+                                        function (response, status, xhr)
+        {
+            if (status == "error")
+            {
+                alert("An error occurred while loading the results.");
+            }
+        });
+    });
+});*@
+        function getDynamicControls() {
+            var id = '@Guid.NewGuid()';
+
+            var div = $("<div />").attr('class','col-md-12');
+
+            var hiddenField = $("<input />").attr("type", "hidden").attr('value', id).attr('name','id');
+            var relation = $("<input />").attr("type", "textbox").attr("id", "Relation" + id).attr('name', 'Relation');
+            var name = $("<input />").attr("type", "textbox").attr("id", "Name" + id).attr("name", "Name");
+            var address = $("<input />").attr("type", "textbox").attr("id", "address" + id).attr("name", "address");
+            var removeButton = $("<input />").attr("type", "button").attr("value", "Remove");
+            removeButton.attr("onclick", "removeTextBox(this)");
+
+            div.append(hiddenField);
+            div.append(relation);
+            div.append(name);
+            div.append(address);
+            div.append(removeButton);
+
+            return div;
+            }
+
+        function addTextBox() {
+            var div = getDynamicControls();
+            $("#TextBoxContainer").append(div);
+        }
+
+        function removeTextBox(button) {
+            $(button).parent().remove();
+        }
+    </script>
+}

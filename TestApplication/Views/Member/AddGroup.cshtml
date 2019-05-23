@@ -1,0 +1,94 @@
+﻿@model TestApplication.Entities.Group
+@using TestApplication.Models
+@using TestApplication.Helpers
+@{
+    /**/
+
+    ViewBag.Title = "Add Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model?.Id > 0)
+{
+    <h2>Edit Group</h2>
+}
+else if (ViewBag.IsView == true)
+{
+    <h2>View Group</h2>
+}
+else
+{
+    <h2>Add Group</h2>
+}
+
+@using (Html.BeginForm("AddGroup", "Member", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberIds, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.ListBoxFor(model => model.MemberIds, MemberModel.GetMembers(), new { @class = "form-control select2 select2-multiple", multiple = "multiple", required = "required" })
+                @Html.ValidationMessageFor(model => model.MemberIds, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreationDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CreationDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @value = DateTime.Now.ToShortDateString() } })
+                @Html.ValidationMessageFor(model => model.CreationDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                <input input data-val="true" data-val-required="The Active field is required." id="IsActive" name="IsActive" type="checkbox" value="true" switch="bool" checked="checked">
+                <label for="IsActive" data-on-label="Yes" data-off-label="No" class="m-t-4"></label>
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+
+                @if (Model.Id == 0)
+                {
+                    <input type="submit" value="Add Group" class="btn btn-primary waves-effect waves-light" />
+                }
+                else if (ViewBag.IsView == true)
+                {
+                    <a class="btn btn-primary waves-effect waves-light" href="@Common.GetUrl("AddGroup", "Member", @Model.Id)">Edit</a>
+                }
+                else
+                {
+                    <input type="submit" value="Update Group" class="btn btn-primary waves-effect waves-light" />
+                }
+                <a class="btn btn-secondary" href="@Common.GetUrl("Groups", "Member")">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@*@Html.Partial("Accounts/_Deposit",Model)*@
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var disabled = '@ViewData["disablecontrols"].ToString()';
+            if (disabled == 'True') {
+                $('input,select,:button').attr('disabled', disabled);
+            }
+            
+        });
+    </script>
+}

@@ -1,0 +1,334 @@
+﻿@model TestApplication.Entities.CompanyProfile
+
+@{
+    ViewBag.Title = "ViewCompanyProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Jayant India Nidhi Limited.</h2>
+
+<div>
+    <h4>Company Profile</h4>
+    <hr />
+    <div class="form-horizontal">
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.CompanyName, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.CompanyName)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.ShortName, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.ShortName)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.AboutCompany, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.AboutCompany)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.CIN, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.CIN)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.PAN, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.PAN)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.TAN, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.TAN)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.CompanyCategoryId, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.CompanyCategoryId)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.CompanyClass, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.CompanyClass)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.AuthorizedCapital, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.AuthorizedCapital)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.PaidupCapital, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.PaidupCapital)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.ShareNominalValue, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.ShareNominalValue)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.IncorporationCountryId, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.IncorporationCountryId)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.IncorporationStateId, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.IncorporationStateId)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.Address, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Address)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Email)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.Landline, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayNameFor(m => m.Landline)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.IncorporationDate, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayNameFor(m => m.IncorporationDate)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-8">
+                <input type="submit" class="btn btn-primary waves-effect waves-light" value="Edit Profile" onclick="window.location.href = 'http://localhost:51779/Company/CompanyProfile';" />
+                <button type="reset" class="btn btn-secondary waves-effect m-l-5" id="Cancel">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    @*<dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CompanyName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CompanyName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ShortName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ShortName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AboutCompany)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AboutCompany)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CIN)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CIN)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PAN)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PAN)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TAN)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TAN)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CompanyCategoryId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CompanyCategoryId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CompanyClass)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CompanyClass)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AuthorizedCapital)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.AuthorizedCapital)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PaidupCapital)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PaidupCapital)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ShareNominalValue)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ShareNominalValue)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.StateOfRegistration)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.StateOfRegistration)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IncorporationCountryId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IncorporationCountryId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IncorporationStateId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IncorporationStateId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IncorporationDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IncorporationDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Mobile)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Mobile)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Landline)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Landline)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Address1)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Address1)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Address2)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Address2)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.City)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.StateId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.StateId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Pincode)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Pincode)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CountryId)
+            </dd>
+
+        </dl>*@
+</div>
+
+@*<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>*@
+@section Scripts {
+    <style>
+        .control-label {
+            padding-top: 0px !important;
+            text-align:left !important;
+        }
+    </style>
+}

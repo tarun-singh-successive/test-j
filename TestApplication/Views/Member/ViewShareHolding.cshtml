@@ -1,0 +1,70 @@
+﻿@model TestApplication.Entities.ShareHolding
+@using TestApplication.Helpers
+@{
+    ViewBag.Title = "ViewShareHolding";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewShareHolding</h2>
+
+
+<div>
+    <h4>Member Profile</h4>
+    <hr />
+    <div class="form-horizontal">
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.Member.Name, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.MemberName)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.ReferName, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.ReferName)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.TransferDate, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.TransferDate)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.Quantity, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Quantity)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.PricePerShare, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.PricePerShare)
+            </div>
+        </div>
+        <div class="form-group company-form">
+            @Html.LabelFor(m => m.TotalPrice, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.CalculatedTotalPrice)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-8">
+                <input type="button" class="btn btn-primary waves-effect waves-light" value="Edit Shares" onclick='window.location.href = "@Common.GetUrl("AddShareHolding","Member", Model.Id)"'/>
+                <input type="button" class="btn btn-danger" id="sa-warning" value="Delete Shares" data-sa= "@Common.GetUrl("DeleteShareHolding","Member", Model.Id)"/>
+                <button type="reset" class="btn btn-secondary m-l-5" id="Cancel" onclick='window.location.href = "@Common.GetUrl("ShareHoldings","Member")"'>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .control-label {
+            padding-top: 0px !important;
+            text-align: left !important;
+        }
+    </style>
+}

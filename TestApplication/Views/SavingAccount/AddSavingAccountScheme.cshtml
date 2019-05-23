@@ -1,0 +1,65 @@
+﻿@model TestApplication.Entities.Scheme
+@using TestApplication.Helpers
+@{
+    /**/
+
+    ViewBag.Title = "Add Saving Account Scheme";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Saving Account Scheme</h2>
+
+@if (Model?.Id > 0)
+{
+    <h4>Edit Scheme</h4>
+}
+else if (Convert.ToBoolean(ViewData["disablecontrols"]))
+{
+    <h4>View Scheme</h4>
+}
+else
+{
+    <h4>Add Scheme</h4>
+}
+
+@using (Html.BeginForm("AddSavingAccountScheme", "SavingAccount", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Partial("_AddScheme", Model)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+
+                @if (Model?.Id > 0)
+                {
+                    <input type="submit" value="Update Scheme" class="btn btn-primary waves-effect waves-light" />
+                }
+                else if (Convert.ToBoolean(ViewData["disablecontrols"]))
+                {
+                    <a class="btn btn-info waves-effect waves-light" href="@Common.GetUrl("AddSavingAccountScheme", "SavingAccount", @Model.Id + "?IsView=true")">Edit</a>
+                }
+                else
+                {
+                    <input type="submit" value="Add Scheme" class="btn btn-primary waves-effect waves-light" />
+                }
+                <a class="btn btn-secondary" href="@Common.GetUrl("SavingAccountSchemes", "SavingAccount")">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var disabled = '@ViewData["disablecontrols"].ToString()';
+            if (disabled == 'True') {
+                $('input,select').attr('disabled', disabled);
+            }
+        });
+    </script>
+}

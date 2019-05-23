@@ -1,0 +1,101 @@
+﻿@model TestApplication.Entities.CompanyBankAccount
+@using TestApplication.Models
+@using TestApplication.Helpers
+@{
+    ViewBag.Title = "AddBankAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model?.Id > 0)
+{
+    <h2>Edit Company Bank Account</h2>
+}
+else if (ViewBag.IsView == true)
+{
+    <h2>View Company Bank Account</h2>
+}
+else
+{
+    <h2>Add Company Bank Account</h2>
+}
+
+@using (Html.BeginForm("AddBankAccount", "Company", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Member</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Bank Name", htmlAttributes: new { @class = "control-label col-md-2", @for = nameof(Model.Name) })
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", required = "required" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Account No", htmlAttributes: new { @class = "control-label col-md-2", @for = nameof(Model.AccountNo) })
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.AccountNo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AccountNo, "", new { @class = "text-danger", required = "required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Ifsc Code", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.IfscCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IfscCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.OpenDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.OpenDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @value = DateTime.Now.ToShortDateString() } })
+                @Html.ValidationMessageFor(model => model.OpenDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                <input input data-val="true" data-val-required="The Active field is required." id="IsActive" name="IsActive" type="checkbox" value="true" switch="bool" checked="checked">
+                <label for="IsActive" data-on-label="Yes" data-off-label="No" class="m-t-4"></label>
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+
+                @if ((Model?.Id ?? 0) == 0)
+                {
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Add Branch</button>
+                }
+                else if (ViewBag.IsView == true)
+                {
+                    <a class="btn btn-primary waves-effect waves-light" href="@Common.GetUrl("AddBankAccount", "Company", @Model.Id)">Edit</a>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Update Type</button>
+                }
+                <a class="btn btn-secondary waves-effect waves-light" href="@Common.GetUrl("BankAccounts", "Company")">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@*@Html.Partial("Accounts/_Deposit",Model)*@
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var disabled = '@ViewData["disablecontrols"].ToString()';
+            if (disabled == 'True') {
+                $('input,select,:button').attr('disabled', disabled);
+            }
+
+        });
+    </script>
+}
+

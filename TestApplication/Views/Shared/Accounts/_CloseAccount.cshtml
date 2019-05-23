@@ -1,0 +1,53 @@
+﻿@model TestApplication.Entities.MemberAccount
+@using TestApplication.Models
+@using TestApplication.Helpers
+
+@using (Ajax.BeginForm("CloseAccount", new AjaxOptions()
+{
+    OnSuccess = "onSuccess"
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <hr />
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Current Balance", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.TotalBalance, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InterestAccrued, htmlAttributes: new { @class = "control-label col-md-2", disabled = "disabled" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.InterestAccrued, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                @Html.ValidationMessageFor(model => model.InterestAccrued, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CloseAccountReason, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CloseAccountReason, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CloseAccountReason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.Partial("_Payment", Model.AmountTransaction)
+        <div class="form-group">
+            @Html.Label("Net Amount to Release", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.AmountWithInterest, new { htmlAttributes = new { @class = "form-control", disabled="disabled" } })
+                @Html.ValidationMessageFor(model => model.AmountWithInterest, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+                <input type="submit" value="Close Account" onclick="validate(this, event)" class="btn btn-primary waves-effect waves-light" />
+                <a class="btn btn-secondary" href="@Common.GetUrl("SavingAccounts", "SavingAccount")">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}

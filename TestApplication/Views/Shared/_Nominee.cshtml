@@ -1,0 +1,20 @@
+﻿@model TestApplication.Entities.Nominees
+
+@Html.HiddenFor(x=>x.Id)
+@*<div class="col-md-12">
+    <div class="col-md-4">
+        <input type="text" id="Relation" />
+    </div>
+    <div class="col-md-4">
+        <input type="text" id="Name" />
+    </div>
+    <div class="col-md-4">
+        <input type="text" id="Address" />
+    </div>
+    <input type="button" value="Remove" />
+</div>*@
+<input type="button" value="add" onclick="addTextBox()" />
+
+<div id="TextBoxContainer">
+
+</div>

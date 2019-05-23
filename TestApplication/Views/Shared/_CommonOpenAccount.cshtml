@@ -1,0 +1,26 @@
+﻿@model TestApplication.Entities.MemberAccount
+@using TestApplication.Models
+@Html.HiddenFor(x=>x.Id)
+@Html.HiddenFor(x=>x.AccountTypeId)
+@Html.HiddenFor(x=>x.CreationDate)
+<div class="form-group">
+    @Html.LabelFor(model => model.MemberId, new { @class = "control-label col-md-2" })
+    <div class="col-md-8">
+        @Html.DropDownListFor(model => model.MemberId, MemberModel.GetMembers(), "Select Member", new { @class = "form-control select2", required = "required" })
+        @Html.ValidationMessageFor(model => model.MemberId, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BranchId, new { @class = "control-label col-md-2" })
+    <div class="col-md-8">
+        @Html.DropDownListFor(model => model.BranchId, MemberModel.GetBranches(), "Select Branch", new { @class = "form-control select2", required = "required" })
+        @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.AgentId, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-8">
+        @Html.DropDownListFor(model => model.AgentId, MemberModel.GetAgents(), "Select Agent", new { @class = "form-control select2", required = "required" })
+        @Html.ValidationMessageFor(model => model.AgentId, "", new { @class = "text-danger" })
+    </div>
+</div>

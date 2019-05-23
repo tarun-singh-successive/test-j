@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "SavingAccounts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Saving Accounts</h2>
+
+<div class="row p-b11">
+    <a class="btn btn-primary  waves-effect waves-light float-right m-r13" href="/SavingAccount/AddSavingAccount">Add New Account</a>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table id="datatable-buttons"
+                       class="table table-striped table-bordered dt-responsive nowrap"
+                       style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Account Number</th>
+                            <th>Member Name</th>
+                            <th>Branch</th>
+                            <th>Scheme</th>
+                            <th>Creation Date</th>
+                            <th>Total Balance</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+            $(document).ready(function () {
+                $("#datatable-buttons").DataTable({
+                    "serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    "orderMulti": false, // for disable multiple column at once
+
+                    "ajax": {
+                        "url": "/SavingAccount/LoadAccounts",
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "columnDefs":
+                        [{
+                            "targets": [7],
+                            "visible": true,
+                            "searchable": false
+                        }],
+                    "columns": [
+                        { "data": "AccountNumber", "name": "AccountNumber", "autoWidth": true },
+                        { "data": "MemberName", "name": "MemberName", "autoWidth": true },
+                        { "data": "Branch", "title": "Branch", "name": "Branch", "autoWidth": true },
+                        { "data": "Scheme", "name": "Scheme", "autoWidth": true },
+                        { "data": "CreationDate", "name": "CreationDate", "autoWidth": true },
+                        { "data": "TotalBalance", "name": "TotalBalance", "autoWidth": true },
+                        {
+                            "render": function (data, type, full, meta) {
+                                if (type === "sort" || type === 'type') {
+                                    return full.StatusId;
+                                }
+                                return full.StatusId == 1 ? "Active" : "Inactive";
+                            }, name: "StatusId", autoWidth: true
+                        },
+                        {
+                            "render": function (data, type, full, meta) {
+                                return '<a class="btn btn-info waves-effect waves-light" href="/SavingAccount/AddSavingAccount/' + full.Id +
+                                    '?IsView=true">View</a><a class="btn adjacent-btn btn-primary waves-effect waves-light" href="/SavingAccount/AddSavingAccount/' + full.Id + '">Edit</a> ';
+                            }, width: "10%", orderable:false
+                        }
+                    ],
+                    buttons: ["copy", "excel", "pdf", "colvis"]
+                });
+                $("#datatable-buttons_filter").append($(".dt-buttons"));
+            });
+    </script>
+}

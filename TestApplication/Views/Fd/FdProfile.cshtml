@@ -1,0 +1,97 @@
+﻿@model TestApplication.Entities.FdAccount
+@using TestApplication.Helpers
+@{
+    ViewBag.Title = "FdProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Fd Profile</h2>
+
+<style>
+    .view-form .control-label {
+        padding-top: 0px !important;
+        text-align: left !important;
+    }
+
+    .view-form {
+        border-bottom: 1px solid #2a31420a;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+</style>
+<div>
+    <hr />
+    <div class="form-horizontal">
+
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.FdMemberAccount.Member.Name, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.FdMemberAccount.Member.Name)
+            </div>
+        </div>
+
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.FdMemberAccount.Member.Mobile, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.FdMemberAccount.Member.Mobile)
+            </div>
+        </div>
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.FdMemberAccount.AgentId, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.FdMemberAccount.AgentId)
+            </div>
+        </div>
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.FdMemberAccount.Branches.Name, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.FdMemberAccount.Branches.Name)
+            </div>
+        </div>
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.Scheme.Name, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Scheme.Name)
+            </div>
+        </div>
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.FdAmount, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.FdAmount)
+            </div>
+        </div>
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.Scheme.AnnualInterestRate, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Scheme.AnnualInterestRate)
+            </div>
+        </div>
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.FdMemberAccount.Member.Age, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.FdMemberAccount.Member.Age)
+            </div>
+        </div>
+        <div class="form-group view-form">
+            @Html.Label("Fd Start Date", new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.CreationDateString)
+            </div>
+        </div>
+
+
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.ClosingDate, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.ClosingDateString)
+            </div>
+        </div>
+        <div class="form-group view-form">
+            @Html.LabelFor(m => m.FdMemberAccount.StatusId, new { @class = "col-md-3 col-md-offset-1 control-label" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.FdMemberAccount.StatusText)
+            </div>
+        </div>
+    </div>
+</div>
+

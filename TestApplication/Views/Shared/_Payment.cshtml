@@ -1,0 +1,102 @@
+﻿@model TestApplication.Entities.AmountTransaction
+@using TestApplication.Helpers
+@using TestApplication.Models
+
+@Html.HiddenFor(x => x.MemberAccountId)
+@Html.HiddenFor(x => x.Id)
+@Html.HiddenFor(x => x.CreationDate)
+@Html.HiddenFor(x => x.CreatedBy)
+@Html.HiddenFor(x => x.StatusId)
+<div class="form-group">
+    @Html.LabelFor(model => model.TransactionDate, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-8">
+        @Html.EditorFor(model => model.TransactionDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+        @Html.ValidationMessageFor(model => model.TransactionDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.PaymentModeId, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-8" style="padding-top:6px">
+        <div class="custom-control custom-radio custom-control-inline">
+            @Html.RadioButtonFor(x => x.PaymentModeId, "1", new { @class = "custom-control-input", id = "PaymentMode1", onclick = "showPayment(this)" })
+            @Html.LabelFor(model => model.PaymentModeId, "Cash", htmlAttributes: new { @class = "custom-control-label", @for = "PaymentMode1" })
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            @Html.RadioButtonFor(x => x.PaymentModeId, "2", new { @class = "custom-control-input", id = "PaymentMode2", onclick = "showPayment(this)" })
+            @Html.LabelFor(model => model.PaymentModeId, "Cheque", htmlAttributes: new { @class = "custom-control-label", @for = "PaymentMode2" })
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            @Html.RadioButtonFor(x => x.PaymentModeId, "3", new { @class = "custom-control-input", id = "PaymentMode3", onclick = "showPayment(this)" })
+            @Html.LabelFor(model => model.PaymentModeId, "Online Tr.", htmlAttributes: new { @class = "custom-control-label", @for = "PaymentMode3" })
+        </div>
+        @Html.ValidationMessageFor(model => model.PaymentModeId, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div id="DivCheque" class="DivCheque">
+    <div class="form-group">
+        @Html.LabelFor(model => model.ChequeBankId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.ChequeBankId, MemberModel.GetChequeBanks(), "Select Bank", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ChequeBankId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ChequeNo, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ChequeNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ChequeNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ChequeDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ChequeDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+            @Html.ValidationMessageFor(model => model.ChequeDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div id="OnlineTrans" class="OnlineTrans">
+    <div class="form-group">
+        @Html.LabelFor(model => model.OnlineTransferDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(model => model.OnlineTransferDate, new { @class = "form-control", @type = "date", required = "required" })
+            @Html.ValidationMessageFor(model => model.OnlineTransferDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.OnlineTransferModeId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8" style="padding-top:6px">
+            <div class="custom-control custom-radio custom-control-inline">
+                @Html.RadioButtonFor(x => x.OnlineTransferModeId, ((int)Enumerations.OnlineTransferModes.Imps), new { @class = "custom-control-input", id = "OnlineTransferModeId1" })
+                @Html.LabelFor(model => model.OnlineTransferModeId, Enumerations.OnlineTransferModes.Imps.GetDescription(), htmlAttributes: new { @class = "custom-control-label", @for = "OnlineTransferModeId1" })
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                @Html.RadioButtonFor(x => x.OnlineTransferModeId, ((int)Enumerations.OnlineTransferModes.Vpa), new { @class = "custom-control-input", id = "OnlineTransferModeId2" })
+                @Html.LabelFor(model => model.OnlineTransferModeId, Enumerations.OnlineTransferModes.Vpa.GetDescription(), htmlAttributes: new { @class = "custom-control-label", @for = "OnlineTransferModeId2" })
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                @Html.RadioButtonFor(x => x.OnlineTransferModeId, ((int)Enumerations.OnlineTransferModes.Neft), new { @class = "custom-control-input", id = "OnlineTransferModeId3" })
+                @Html.LabelFor(model => model.OnlineTransferModeId, Enumerations.OnlineTransferModes.Neft.GetDescription(), htmlAttributes: new { @class = "custom-control-label", @for = "OnlineTransferModeId3" })
+            </div>
+            @Html.ValidationMessageFor(model => model.OnlineTransferModeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.OnlineTransferId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.OnlineTransferId, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            @Html.ValidationMessageFor(model => model.OnlineTransferId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="custom-control custom-checkbox">
+                @Html.CheckBoxFor(x => x.CreditInCompany,  new { @class = "custom-control-input" })
+                @Html.LabelFor(model => model.CreditInCompany, htmlAttributes: new { @class = "custom-control-label" })
+            </div>
+            @*<input input data-val="true" data-val-required="The Nominee field is required." id="CreditInCompany" name="CreditInCompany" type="checkbox" value="true" switch="bool">*@
+            @Html.ValidationMessageFor(model => model.CreditInCompany, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
